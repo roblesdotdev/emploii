@@ -15,12 +15,80 @@ model User {
   username  String    @unique
   email     String    @unique
   password  Password?
+  orgs      Org[]
+  admin     Admin?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model Admin {
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Password {
   user   User   @relation(references: [id], fields: [userId], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
   hash   String
+}
+
+model Org {
+  id   String @id @default(cuid())
+  slug String @unique
+  name String
+
+  user        User         @relation(references: [id], fields: [userId], onDelete: Cascade, onUpdate: Cascade)
+  userId      String
+  jobs        Job[]
+  contactInfo ContactInfo?
+}
+
+model Job {
+  id        String   @id @default(cuid())
+  code      String
+  title     String
+  body      String
+  open      Boolean  @default(true)
+  published Boolean  @default(true)
+  bannerUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team     Team   @relation(fields: [teamSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
+  teamSlug String
+  org      Org    @relation(fields: [orgSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
+  orgSlug  String
+}
+
+model Category {
+  id    String @id @default(cuid())
+  name  String
+  teams Team[]
+}
+
+model Team {
+  slug String @unique
+
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId String   @unique
+  jobs       Job[]
+
+  name String
+}
+
+model ContactInfo {
+  id        String   @id @unique @default(cuid())
+  phone     String?
+  address   String?
+  city      String?
+  state     String?
+  zip       String?
+  country   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  org       Org      @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  orgId     String   @unique
 }
