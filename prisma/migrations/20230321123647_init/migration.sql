@@ -38,14 +38,21 @@ CREATE TABLE "Job" (
     "title" TEXT NOT NULL,
     "body" TEXT NOT NULL,
     "open" BOOLEAN NOT NULL DEFAULT true,
-    "published" BOOLEAN NOT NULL DEFAULT true,
     "bannerUrl" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
+    "locationSlug" TEXT NOT NULL,
     "teamSlug" TEXT NOT NULL,
     "orgSlug" TEXT NOT NULL,
+    CONSTRAINT "Job_locationSlug_fkey" FOREIGN KEY ("locationSlug") REFERENCES "Location" ("slug") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Job_teamSlug_fkey" FOREIGN KEY ("teamSlug") REFERENCES "Team" ("slug") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Job_orgSlug_fkey" FOREIGN KEY ("orgSlug") REFERENCES "Org" ("slug") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Location" (
+    "slug" TEXT NOT NULL,
+    "name" TEXT NOT NULL
 );
 
 -- CreateTable
@@ -91,6 +98,9 @@ CREATE UNIQUE INDEX "Password_userId_key" ON "Password"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Org_slug_key" ON "Org"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Location_slug_key" ON "Location"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Team_slug_key" ON "Team"("slug");

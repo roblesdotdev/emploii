@@ -52,15 +52,22 @@ model Job {
   title     String
   body      String
   open      Boolean  @default(true)
-  published Boolean  @default(true)
   bannerUrl String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  team     Team   @relation(fields: [teamSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
-  teamSlug String
-  org      Org    @relation(fields: [orgSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
-  orgSlug  String
+  location     Location @relation(fields: [locationSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
+  locationSlug String
+  team         Team     @relation(fields: [teamSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
+  teamSlug     String
+  org          Org      @relation(fields: [orgSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
+  orgSlug      String
+}
+
+model Location {
+  slug String @unique
+  name String
+  jobs Job[]
 }
 
 model Category {
