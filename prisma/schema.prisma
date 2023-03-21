@@ -48,6 +48,7 @@ model Org {
 
 model Job {
   id        String   @id @default(cuid())
+  slug      String   @unique
   code      String
   title     String
   body      String
