@@ -24,7 +24,6 @@ CREATE TABLE "Password" (
 
 -- CreateTable
 CREATE TABLE "Org" (
-    "id" TEXT NOT NULL PRIMARY KEY,
     "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -33,7 +32,6 @@ CREATE TABLE "Org" (
 
 -- CreateTable
 CREATE TABLE "Job" (
-    "id" TEXT NOT NULL PRIMARY KEY,
     "slug" TEXT NOT NULL,
     "code" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -53,7 +51,9 @@ CREATE TABLE "Job" (
 -- CreateTable
 CREATE TABLE "Location" (
     "slug" TEXT NOT NULL,
-    "name" TEXT NOT NULL
+    "city" TEXT NOT NULL,
+    "country" TEXT NOT NULL,
+    "remote" BOOLEAN NOT NULL DEFAULT false
 );
 
 -- CreateTable
@@ -81,8 +81,8 @@ CREATE TABLE "ContactInfo" (
     "country" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "orgId" TEXT NOT NULL,
-    CONSTRAINT "ContactInfo_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Org" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "orgSlug" TEXT NOT NULL,
+    CONSTRAINT "ContactInfo_orgSlug_fkey" FOREIGN KEY ("orgSlug") REFERENCES "Org" ("slug") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -116,4 +116,4 @@ CREATE UNIQUE INDEX "Team_slug_key" ON "Team"("slug");
 CREATE UNIQUE INDEX "ContactInfo_id_key" ON "ContactInfo"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ContactInfo_orgId_key" ON "ContactInfo"("orgId");
+CREATE UNIQUE INDEX "ContactInfo_orgSlug_key" ON "ContactInfo"("orgSlug");
