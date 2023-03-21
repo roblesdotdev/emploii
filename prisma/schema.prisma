@@ -71,7 +71,7 @@ model Location {
 }
 
 model Category {
-  id    String @id @default(cuid())
+  slug  String @unique
   name  String
   teams Team[]
 }
@@ -79,9 +79,9 @@ model Category {
 model Team {
   slug String @unique
 
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  categoryId String   @unique
-  jobs       Job[]
+  category     Category @relation(fields: [categorySlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
+  categorySlug String
+  jobs         Job[]
 
   name String
 }

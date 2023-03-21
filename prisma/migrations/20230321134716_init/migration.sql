@@ -57,16 +57,16 @@ CREATE TABLE "Location" (
 
 -- CreateTable
 CREATE TABLE "Category" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "Team" (
     "slug" TEXT NOT NULL,
-    "categoryId" TEXT NOT NULL,
+    "categorySlug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    CONSTRAINT "Team_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "Team_categorySlug_fkey" FOREIGN KEY ("categorySlug") REFERENCES "Category" ("slug") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -103,10 +103,10 @@ CREATE UNIQUE INDEX "Org_slug_key" ON "Org"("slug");
 CREATE UNIQUE INDEX "Location_slug_key" ON "Location"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Team_slug_key" ON "Team"("slug");
+CREATE UNIQUE INDEX "Category_slug_key" ON "Category"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Team_categoryId_key" ON "Team"("categoryId");
+CREATE UNIQUE INDEX "Team_slug_key" ON "Team"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ContactInfo_id_key" ON "ContactInfo"("id");
