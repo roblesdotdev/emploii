@@ -7,17 +7,27 @@ import type {
   Org,
   Job,
   Location,
+  ContactInfo,
 } from '~/types'
 import { faker } from '@faker-js/faker'
 
 function slugify(str: string) {
-  return str.toLocaleLowerCase().trim().split(' ').filter(Boolean).join('-')
+  const hex = faker.random.alpha(4).toLowerCase()
+  return `${str
+    .toLocaleLowerCase()
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+    .join('-')}-${hex}`
 }
 
-export function createUser(username: string): Pick<User, 'email' | 'username'> {
+export function createUser(
+  username?: string,
+): Pick<User, 'email' | 'username'> {
+  const u = username ?? faker.internet.userName()
   return {
-    username,
-    email: `${username}@email.com`,
+    username: u,
+    email: `${u}@email.com`,
   }
 }
 
@@ -27,11 +37,10 @@ export function createPassword(username: string): Pick<Password, 'hash'> {
   }
 }
 
-export function createCategory(): Pick<Category, 'name' | 'slug'> {
+export function createCategory(): Pick<Category, 'name'> {
   const name = faker.name.jobArea()
   return {
     name,
-    slug: slugify(name),
   }
 }
 
@@ -64,6 +73,13 @@ export function createLocation(): Pick<
     country,
     city,
     remote,
+  }
+}
+
+export function createContactInfo(): Pick<ContactInfo, 'country' | 'email'> {
+  return {
+    country: faker.address.country(),
+    email: faker.internet.email(),
   }
 }
 

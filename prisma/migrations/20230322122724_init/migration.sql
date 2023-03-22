@@ -58,16 +58,16 @@ CREATE TABLE "Location" (
 
 -- CreateTable
 CREATE TABLE "Category" (
-    "slug" TEXT NOT NULL,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "Team" (
     "slug" TEXT NOT NULL,
-    "categorySlug" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    CONSTRAINT "Team_categorySlug_fkey" FOREIGN KEY ("categorySlug") REFERENCES "Category" ("slug") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "Team_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -78,6 +78,7 @@ CREATE TABLE "ContactInfo" (
     "city" TEXT,
     "state" TEXT,
     "zip" TEXT,
+    "email" TEXT,
     "country" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
@@ -105,9 +106,6 @@ CREATE UNIQUE INDEX "Job_slug_key" ON "Job"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Location_slug_key" ON "Location"("slug");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Category_slug_key" ON "Category"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Team_slug_key" ON "Team"("slug");

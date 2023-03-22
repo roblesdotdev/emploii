@@ -72,7 +72,7 @@ model Location {
 }
 
 model Category {
-  slug  String @unique
+  id    String @id @default(cuid())
   name  String
   teams Team[]
 }
@@ -80,9 +80,9 @@ model Category {
 model Team {
   slug String @unique
 
-  category     Category @relation(fields: [categorySlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
-  categorySlug String
-  jobs         Job[]
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId String
+  jobs       Job[]
 
   name String
 }
@@ -94,6 +94,7 @@ model ContactInfo {
   city      String?
   state     String?
   zip       String?
+  email     String?
   country   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
